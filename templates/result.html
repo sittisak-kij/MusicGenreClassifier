@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html>
+<head><title>MUSIC GENRE CLASSIFIER</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',git initfilename='styles/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body background="../static/image/bg.jpg">
+<div class="container" style="margin-top: 30px">
+    <div class="card">
+        <div class="card-container">
+
+            <h2><b>PREDICTION RESULT</b></h2>
+            <br/>
+            <h4>SONG NAME: {{ path }}</h4>
+            <br/>
+            <h4>EDM: {{ result[0] }}%</h4>
+            <h4>HIP-HOP: {{ result[1] }}%</h4>
+            <h4>Jazz: {{ result[2] }}%</h4>
+            <h4>Pop: {{ result[3] }}%</h4>
+            <h4>R&B: {{ result[4] }}%</h4>
+            <h4>Rock: {{ result[5] }}%</h4>
+        </div>
+
+        <div class="card" style="margin: 32px">
+            <div class="card-container">
+                <h3>Predict from our storage</h3>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
