@@ -114,6 +114,7 @@ def classify(path):
 
     return [str(edm * 10), str(hiphop * 10), str(jazz * 10), str(pop * 10), str(rnb * 10), str(rock * 10)]
 
+
 if __name__ == "__main__":
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
