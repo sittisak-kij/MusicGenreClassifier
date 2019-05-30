@@ -21,19 +21,32 @@
                     <img src="../static/image/2005916.jpg" width="150px" height="150px">
                 </div>
                 <div style="flex-grow: 10">
-                    <h4><b>EDM:</b> {{ result[0] }}%</h4>
-                    <h4><b>HIP-HOP:</b> {{ result[1] }}%</h4>
-                    <h4><b>Jazz:</b> {{ result[2] }}%</h4>
-                    <h4><b>Pop:</b> {{ result[3] }}%</h4>
-                    <h4><b>R&B:</b> {{ result[4] }}%</h4>
-                    <h4><b>Rock:</b> {{ result[5] }}%</h4>
+                    {% block content %}
+                        {% if model == 'genre-classify-v5-no-edm.lib' %}
+                            <h4><b>HIP-HOP:</b> {{ result[0] }}%</h4>
+                            <h4><b>Jazz:</b> {{ result[1] }}%</h4>
+                            <h4><b>Pop:</b> {{ result[2] }}%</h4>
+                            <h4><b>R&B:</b> {{ result[3] }}%</h4>
+                            <h4><b>Rock:</b> {{ result[4] }}%</h4>
+                        {% else %}
+                            <h4><b>EDM:</b> {{ result[0] }}%</h4>
+                            <h4><b>HIP-HOP:</b> {{ result[1] }}%</h4>
+                            <h4><b>Jazz:</b> {{ result[2] }}%</h4>
+                            <h4><b>Pop:</b> {{ result[3] }}%</h4>
+                            <h4><b>R&B:</b> {{ result[4] }}%</h4>
+                            <h4><b>Rock:</b> {{ result[5] }}%</h4>
+                        {% endif %}
+                    {% endblock content %}
                 </div>
             </div>
 
             <br/>
-            <a href="/"><button type="button" class="btn btn-info">< PREDICT AGAIN</button></a>
+            <a href="/">
+                <button type="button" class="btn btn-info">< PREDICT AGAIN</button>
+            </a>
 
-            <h5 style="margin-top: 32px; text-align: center; font-size: 16px">A part of CS3449 Machine Learning Project Submission |
+            <h5 style="margin-top: 32px; text-align: center; font-size: 16px">A part of CS3449 Machine Learning Project
+                Submission |
                 Developed
                 by: Sittisak
                 T. & Grid K.</h5>
