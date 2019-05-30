@@ -12,22 +12,28 @@
 <div class="container" style="margin-top: 30px">
     <div class="card">
         <div class="card-container">
-
             <h2><b>PREDICTION RESULT</b></h2>
             <br/>
-            <h4>SONG NAME: {{ path }}</h4>
-            <br/>
-            <h4>EDM: {{ result[0] }}%</h4>
-            <h4>HIP-HOP: {{ result[1] }}%</h4>
-            <h4>Jazz: {{ result[2] }}%</h4>
-            <h4>Pop: {{ result[3] }}%</h4>
-            <h4>R&B: {{ result[4] }}%</h4>
-            <h4>Rock: {{ result[5] }}%</h4>
+            <h4><b>MODEL:</b> {{ model }}</h4>
+            <h4><b>SONG NAME:</b> {{ path.replace("_", " ") }}</h4>
+            <div class="flex-container" style="margin-top: 32px">
+                <div style="flex-grow: 1">
+                    <img src="../static/image/2005916.jpg" width="150px" height="150px">
+                </div>
+                <div style="flex-grow: 10">
+                    <h4><b>EDM:</b> {{ result[0] }}%</h4>
+                    <h4><b>HIP-HOP:</b> {{ result[1] }}%</h4>
+                    <h4><b>Jazz:</b> {{ result[2] }}%</h4>
+                    <h4><b>Pop:</b> {{ result[3] }}%</h4>
+                    <h4><b>R&B:</b> {{ result[4] }}%</h4>
+                    <h4><b>Rock:</b> {{ result[5] }}%</h4>
+                </div>
+            </div>
 
             <br/>
-            <a href="/">HOME</a>
+            <a href="/"><button type="button" class="btn btn-info">< PREDICT AGAIN</button></a>
 
-            <h5 style="margin-top: 32px; text-align: center; font-size: 16px">A part of CS3449 Machine Learning |
+            <h5 style="margin-top: 32px; text-align: center; font-size: 16px">A part of CS3449 Machine Learning Project Submission |
                 Developed
                 by: Sittisak
                 T. & Grid K.</h5>

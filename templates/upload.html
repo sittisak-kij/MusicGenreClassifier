@@ -7,19 +7,6 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
-    <script type="text/javascript">// <![CDATA[
-        function loading(){
-            $("#loading").show();
-            $("#content").hide();
-        }
-// ]]></script>
-    <script type="text/javascript">// <![CDATA[
-        function loading(){
-            $("#loading").show();
-            $("#content").hide();
-        }
-// ]]></script>
-
 </head>
 <body background="../static/image/bg.jpg">
 <div id="loading"></div>
@@ -29,11 +16,25 @@
             <h1 style="text-align: center">MUSIC GENRE CLASSIFIER</h1>
 
             <div class="flex-container" style="margin-top: 32px">
-                <div style="flex-grow: 1"><h4>Choose music file to classify: </h4></div>
+                <div style="flex-grow: 1">
+                    <h4>Select Model:</h4>
+                </div>
+                <div style="flex-grow: 10">
+                    <select id="model" name="model" action="/" form="target">
+                        {% for model in models %}
+                            <option value="{{ model }}" SELECTED>{{ model }}</option>"
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex-container" style="margin-top: 32px">
+                <div style="flex-grow: 1"><h4>Choose music file to classify(mp3): </h4></div>
                 <div style="flex-grow: 5">
                     <form id="target" method="post" action="/" enctype="multipart/form-data">
                         <input id="file" type="file" name="file" autocomplete="off"
-                               placeholder="Select music file to upload (mp3 only)" onchange="form.submit(); loading();">
+                               placeholder="Select music file to upload (mp3 only)"
+                               onchange="form.submit(); loading();">
                     </form>
                 </div>
             </div>
@@ -42,16 +43,25 @@
                 <div class="card-container">
                     <h3>Predict from our storage</h3>
                     {% for song in songs %}
-                        <a href="result?path={{ song }}">{{ song }}</a> <br />
+                        <a  href="#" onclick="getResult('{{ song }}')">{{ song.replace("_", " ") }}</a> <br/>
                     {% endfor %}
                 </div>
             </div>
 
-            <h5 style="margin-top: 32px; text-align: center; font-size: 16px">A part of CS3449 Machine Learning |
+            <h5 style="margin-top: 32px; text-align: center; font-size: 16px">A part of CS3449 Machine Learning Project
+                Submission |
                 Developed by: Sittisak
                 T. & Grid K.</h5>
         </div>
     </div>
 </div>
+
+<script>
+    function getResult(path) {
+        let e = document.getElementById("model");
+        let model = e.options[e.selectedIndex].value;
+        window.location.href = "/result?path=" + path + "&model=" + model
+    }
+</script>
 </body>
 </html>

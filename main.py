@@ -23,7 +23,9 @@ def allowed_file(filename):
 def upload_form():
     path = os.getcwd() + '\\uploads'
     songs = os.listdir(path)
-    return render_template('upload.html', songs=songs)
+    modelspath = os.getcwd() + '\\static\\models'
+    models = os.listdir(modelspath)
+    return render_template('upload.html', songs=songs, models=models)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -41,23 +43,25 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash('File(s) successfully uploaded')
-            return redirect(url_for('.result', path=filename))
+            model = request.form.get('model')
+            return redirect(url_for('.result', path=filename, model=model))
 
 
 @app.route('/result')
 def result():
     path = request.args['path']
-    result = classify(path)
-    return render_template("result.html", path=path, result=result)
+    model = request.args['model']
+    result = classify(path, model)
+    return render_template("result.html", path=path, result=result, model=model)
 
 
-def classify(path):
+def classify(path, model):
     fullpath = os.getcwd() + '\\uploads\\' + path
     song = "song.wav"
     sound = AudioSegment.from_mp3(fullpath)
     sound.export(song, format="wav")
 
-    SVM_MODEL = os.getcwd() + '\\static\\models\\genre-classify-20sec.lib'
+    SVM_MODEL = os.getcwd() + '\\static\\models\\' + model
 
     y, sr = librosa.load(song)
     t = librosa.core.get_duration(y=y)
@@ -89,31 +93,54 @@ def classify(path):
     classifier = load(SVM_MODEL)
     result = classifier.predict(collection)
 
+    print(result)
+
     # print the genre percentage
-    edm, hiphop, jazz, pop, rnb, rock = 0, 0, 0, 0, 0, 0
-    for i in result:
-        if i == 0:
-            edm += 1
-        elif i == 1:
-            hiphop += 1
-        elif i == 2:
-            jazz += 1
-        elif i == 3:
-            pop += 1
-        elif i == 4:
-            rnb += 1
-        else:
-            rock += 1
+    if model == 'genre-classify-v5-no-edm.lib':
+        hiphop, jazz, pop, rnb, rock = 0., 0., 0., 0., 0.
+        for i in result:
+            if i == 0:
+                hiphop += 1
+            elif i == 1:
+                jazz += 1
+            elif i == 2:
+                pop += 1
+            elif i == 3:
+                rnb += 1
+            else:
+                rock += 1
+        count = float(len(result))
+        print("hiphop: " + "%.2f"%(hiphop / count * 100))
+        print("jazz: " + "%.2f"%(jazz / count * 100))
+        print("pop: " + "%.2f"%(pop / count * 100))
+        print("rnb: " + "%.2f"%(rnb / count * 100))
+        print("rock: " + "%.2f"%(rock / count * 100))
 
-    print("edm:" + str(edm * 10) + "%")
-    print("hiphop: " + str(hiphop * 10) + "%")
-    print("jazz: " + str(jazz * 10) + "%")
-    print("pop: " + str(pop * 10) + "%")
-    print("rnb: " + str(rnb * 10) + "%")
-    print("rock: " + str(rock * 10) + "%")
+        return ["%.2f"%(hiphop / count * 100), "%.2f"%(jazz / count * 100), "%.2f"%(pop / count * 100), "%.2f"%(rnb / count * 100), "%.2f"%(rock / count * 100)]
+    else:
+        edm, hiphop, jazz, pop, rnb, rock = 0., 0., 0., 0., 0., 0.
+        for i in result:
+            if i == 0:
+                edm += 1
+            elif i == 1:
+                hiphop += 1
+            elif i == 2:
+                jazz += 1
+            elif i == 3:
+                pop += 1
+            elif i == 4:
+                rnb += 1
+            else:
+                rock += 1
+        count = float(len(result))
+        print("edm:" + "%.2f"%(edm / count * 100))
+        print("hiphop: " + "%.2f"%(hiphop  / count * 100))
+        print("jazz: " + "%.2f"%(jazz  / count * 100))
+        print("pop: " + "%.2f"%(pop  / count * 100))
+        print("rnb: " + "%.2f"%(rnb  / count * 100))
+        print("rock: " + "%.2f"%(rock  / count * 100))
 
-    return [str(edm * 10), str(hiphop * 10), str(jazz * 10), str(pop * 10), str(rnb * 10), str(rock * 10)]
-
+        return ["%.2f"%(edm / count * 100), "%.2f"%(hiphop / count * 100), "%.2f"%(jazz / count * 100), "%.2f"%(pop / count * 100), "%.2f"%(rnb / count * 100), "%.2f"%(rock / count * 100)]
 
 if __name__ == "__main__":
     app.jinja_env.auto_reload = True
